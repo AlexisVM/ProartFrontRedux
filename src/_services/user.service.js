@@ -11,6 +11,20 @@ export const userService = {
     delete: _delete
 };
 
+function me(){
+const requestOptions = {
+        method: 'GET',
+        headers: authHeader()
+    };
+     return fetch(`${config.apiUrl}/api/me/`, requestOptions)
+        .then(handleResponse)
+        .then(user => {
+            console.log(user)
+            localStorage.setItem('user', JSON.stringify(user));
+            return user;
+        });
+}
+
 function login(email, password) {
     const requestOptions = {
         method: 'POST',
@@ -21,16 +35,18 @@ function login(email, password) {
     return fetch(`${config.apiUrl}/api/auth/login/`, requestOptions)
         .then(handleResponse)
         .then(user => {
+            console.log(user)
             // store user details and jwt token in local storage to keep user logged in between page refreshes
-            localStorage.setItem('user', JSON.stringify(user));
+            localStorage.setItem('token', user.auth_token);
 
-            return user;
+            return me();
         });
 }
 
 function logout() {
     // remove user from local storage to log user out
     localStorage.removeItem('user');
+    localStorage.removeItem('token');
 }
 
 function getAll() {
@@ -39,8 +55,10 @@ function getAll() {
         headers: authHeader()
     };
 
-    return fetch(`${config.apiUrl}api/users/`, requestOptions).then(handleResponse);
+    return fetch(`${config.apiUrl}/api/users/`, requestOptions).then(handleResponse);
 }
+
+
 
 function getById(id) {
     const requestOptions = {

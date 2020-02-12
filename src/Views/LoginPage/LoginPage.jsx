@@ -13,6 +13,8 @@ import Grid from '@material-ui/core/Grid';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import Container from '@material-ui/core/Container';
+import { withStyles } from '@material-ui/core/styles';
+
 //redux
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
@@ -31,32 +33,37 @@ function Copyright() {
   );
 }
 
-const styles = {
-  image:{
+const useStyles = theme => ({
+  root: {
+    height: '100vh',
+  },
+  image: {
     backgroundImage: 'url(https://ibericacontemporanea.com.mx/wp-content/uploads/2019/06/Inauguracion.jpg)',
     backgroundRepeat: 'no-repeat',
+    backgroundColor:
+      theme.palette.type === 'dark' ? theme.palette.grey[900] : theme.palette.grey[50],
     backgroundSize: 'cover',
     backgroundPosition: 'center',
   },
-  wrapper: {
-    height: '100vh',
-  },
-  form:{
-    height:'100vh',
-  },
   paper: {
+    margin: theme.spacing(8, 4),
     display: 'flex',
     flexDirection: 'column',
-    justify: 'center',
+    alignItems: 'center',
   },
   avatar: {
-    backgroundColor: "#F50057",
+    margin: theme.spacing(1),
+    backgroundColor: theme.palette.secondary.main,
   },
-  button:{
-    marginTop: "8%",
-    marginBottom: "8%",
-  }
-}
+  form: {
+    width: '100%', // Fix IE 11 issue.
+    marginTop: theme.spacing(1),
+  },
+  submit: {
+    margin: theme.spacing(3, 0, 2),
+  },
+});
+
 
 class LoginPage extends React.Component {
 
@@ -91,76 +98,77 @@ class LoginPage extends React.Component {
     }
 
     render() {
-        const { loggingIn } = this.props;
+        const { loggingIn, classes } = this.props;
         const { email, password, submitted } = this.state;
         return (
-          <React.Fragment>
-            <Grid container style={styles.wrapper} >
-              <Grid item xs={false} sm={4} md={8} style={styles.image}>
+          <Grid container component="main" className={classes.root}>
+      <CssBaseline />
+      <Grid item xs={false} sm={4} md={7} className={classes.image} />
+      <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
+        <div className={classes.paper}>
+          <Avatar className={classes.avatar}>
+            <LockOutlinedIcon />
+          </Avatar>
+          <Typography component="h1" variant="h5">
+            Iniciar Sesión
+          </Typography>
+          <form className={classes.form} noValidate>
+            <TextField
+              variant="outlined"
+              margin="normal"
+              required
+              fullWidth
+              id="email"
+              label="Correo Electrónico/Email Address"
+              name="email"
+              autoComplete="email"
+              autoFocus
+            />
+            <TextField
+              variant="outlined"
+              margin="normal"
+              required
+              fullWidth
+              name="password"
+              label="Contraseña/Password"
+              type="password"
+              id="password"
+              autoComplete="current-password"
+            />
+            <FormControlLabel
+              control={<Checkbox value="remember" color="primary" />}
+              label="Recuérdame/Remember me"
+            />
+            <Button
+              type="enviar/submit"
+              fullWidth
+              variant="contained"
+              color="primary"
+              className={classes.submit}
+              href="http://localhost:3000/admin/user"
+              target="_self"
+            >
+              Sign In
+            </Button>
+            <Grid container>
+              <Grid item xs>
+                <Link href="#" variant="body2">
+                  Forgot password?
+                </Link>
               </Grid>
-              <Grid item xs={12} sm={8} md={4} component={Paper} elevation={6} square >
-                <Grid container spacing={3} direction="column" justify="center" alignItems="center" style={styles.form} >
-                  <Grid item>
-                    <Avatar style={styles.avatar} ><LockOutlinedIcon /></Avatar>
-                  </Grid>
-                  <Grid item>
-                      <Typography component="h1" variant="h5">Iniciar Sesión</Typography>
-                  </Grid>
-                  <Grid item>
-                      <form name="form" onSubmit={this.handleSubmit} >
-                          <div className={'form-group' + (submitted && !email ? ' has-error' : '')}>
-                              <TextField
-                                variant="outlined"
-                                margin="normal"
-                                required
-                                fullWidth
-                                id="email"
-                                label="Correo Electrónico"
-                                name="email"
-                                autoComplete="email"
-                                value={email}
-                                onChange={this.handleChange}
-                                autoFocus
-                              />{/*email*/}
-                          </div>
-                          <div className={'form-group' + (submitted && !password ? ' has-error' : '')}>
-                              <TextField
-                                variant="outlined"
-                                margin="normal"
-                                required
-                                fullWidth
-                                name="password"
-                                label="Contraseña"
-                                type="password"
-                                id="password"
-                                value={password}
-                                onChange={this.handleChange}
-                                autoComplete="current-password"
-                              />{/*password*/}
-                          </div>
-                          <div className="form-group">
-                            <Button
-                              fullWidth
-                              variant="contained"
-                              color="primary"
-                              style={styles.button}
-                              onClick={this.handleSubmit}
-                            >
-                              Sign In
-                            </Button>
-                              {loggingIn &&
-                                  <img src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
-                              }
-                              <Link to="/register" className="btn btn-link">¿No tienes Cuenta? Regístrate</Link>
-                          </div>
-                      </form>
-                      <Box mt={5}><Copyright /></Box>
-
-                  </Grid>
-                </Grid>
+              <Grid item>
+                <Link href="http://localhost:8000/signup" target="_self" variant="body2">
+                  {"Don't have an account? Sign Up"}
+                </Link>
               </Grid>
             </Grid>
-            </React.Fragment>
+            <Box mt={5}>
+              <Copyright />
+            </Box>
+          </form>
+        </div>
+      </Grid>
+    </Grid>
 
         );
     }
@@ -176,6 +184,6 @@ const actionCreators = {
     logout: userActions.logout
 };
 
-const connectedLoginPage = connect(mapState, actionCreators)(LoginPage);
+const connectedLoginPage = connect(mapState, actionCreators)(withStyles(useStyles)(LoginPage));
 
 export { connectedLoginPage as LoginPage };
