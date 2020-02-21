@@ -40,7 +40,7 @@ export default function Header(props) {
         <div className={classes.flex}>
           {/* Here we create navbar brand, based on route name */}
           <Button color="transparent" href="#" className={classes.title}>
-            {makeBrand()}
+           // {makeBrand()}
           </Button>
         </div>
         <Hidden smDown implementation="css">

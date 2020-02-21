@@ -112,7 +112,7 @@ class LoginPage extends React.Component {
           <Typography component="h1" variant="h5">
             Iniciar Sesión
           </Typography>
-          <form className={classes.form} noValidate>
+          <form className={classes.form} noValidate onSubmit={this.handleSubmit}>
             <TextField
               variant="outlined"
               margin="normal"
@@ -123,6 +123,8 @@ class LoginPage extends React.Component {
               name="email"
               autoComplete="email"
               autoFocus
+              value={email}
+              onChange={this.handleChange}
             />
             <TextField
               variant="outlined"
@@ -134,18 +136,20 @@ class LoginPage extends React.Component {
               type="password"
               id="password"
               autoComplete="current-password"
+              value={password} 
+              onChange={this.handleChange}
             />
             <FormControlLabel
               control={<Checkbox value="remember" color="primary" />}
               label="Recuérdame/Remember me"
             />
             <Button
-              type="enviar/submit"
+              type="submit"
               fullWidth
               variant="contained"
               color="primary"
               className={classes.submit}
-              href="http://localhost:3000/admin/user"
+            //  href="http://localhost:3000/admin/user"
               target="_self"
             >
               Sign In

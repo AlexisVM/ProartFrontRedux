@@ -19,7 +19,7 @@ const requestOptions = {
      return fetch(`${config.apiUrl}/api/me/`, requestOptions)
         .then(handleResponse)
         .then(user => {
-            console.log(user)
+            //console.log(user)
             localStorage.setItem('user', JSON.stringify(user));
             return user;
         });
