@@ -104,7 +104,7 @@ export default function HomePage({ ...rest }) {
     <div className={classes.wrapper}>
       <Sidebar
         routes={routes}
-        logoText={""}
+        logoText={"hola"}
         logo={logo}
         image={image}
         handleDrawerToggle={handleDrawerToggle}
